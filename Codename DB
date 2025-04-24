@@ -1,0 +1,59 @@
+Ext. download cmmnd
+apt install apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring php-zip php-cli php-common php-gd php-intl unzip -y
+
+Database cmnd
+mysql -u root -p
+
+CREATE DATABASE prestashopdb;
+
+CREATE USER 'prestashop'@'localhost' IDENTIFIED BY '1';
+
+GRANT ALL PRIVILEGES ON prestashopdb.* TO 'prestashop'@'localhost';
+
+FLUSH PRIVILEGES;
+
+EXIT;
+
+
+Apache cmnd
+cd /var/www/
+
+wget https://github.com/PrestaShop/PrestaShop/releases/download/8.2.1/prestashop_8.2.1.zip
+
+unzip prestashop_8.2.1.zip -d prestashop
+
+cd prestashop
+
+chown -R www-data:www-data /var/www/prestashop
+
+chmod -R 755 /var/www/prestashop
+
+nano /etc/apache2/sites-available/000-default.conf
+
+a2enmod rewrite
+systemctl restart apache2
+
+rm -rf /var/www/prestashop/install
+
+Database wordpress cmmnd
+mysql
+
+CREATE DATABASE wordpressdb;
+CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '1';
+GRANT ALL PRIVILEGES ON wordpressdb.* TO 'wordpress'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+=>"APACHE2"
+cd /var/www/
+
+wget https://wordpress.org/latest.tar.gz
+tar -xvzf latest.tar.gz
+
+chown -R www-data:www-data /var/www/wordpress
+
+chmod -R 755 /var/www/wordpress
+
+nano /etc/apache2/sites-available/000-default.conf
+
+systemctl restart apache2
